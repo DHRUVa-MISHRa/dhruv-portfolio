@@ -40,6 +40,23 @@ const observer = new IntersectionObserver((entries) => {
 }, { rootMargin: "-35% 0px -55% 0px" });
 sections.forEach((section) => observer.observe(section));
 
+const revealTargets = document.querySelectorAll(
+  ".section-heading, .about-text, .about-stats, .skill-card, .timeline-item, .project-card, .research-card, .certificate-card, .service-card, .contact-details, .contact-form"
+);
+const revealObserver = new IntersectionObserver((entries, currentObserver) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("is-visible");
+      currentObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+revealTargets.forEach((target) => {
+  target.classList.add("reveal");
+  revealObserver.observe(target);
+});
+
 contactForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   formStatus.textContent = "Sending...";
